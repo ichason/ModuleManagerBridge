@@ -21,6 +21,25 @@
   - 自动创建GitHub Release
   - 将构建产物上传到Release页面
 
+## 技术说明
+
+### 🔧 Android SDK兼容性解决方案
+
+由于你的项目使用较老的Android SDK版本（API 23, Build Tools 23.0.3）和Gradle 3.2，我们采用了以下兼容性解决方案：
+
+**问题**: 
+- 最新的Android SDK工具需要Java 17+
+- 但你的项目使用Gradle 3.2，只支持Java 8
+
+**解决方案**:
+- 使用Java 8作为构建环境
+- 手动安装兼容Java 8的Android SDK工具（版本9.0）
+- 只安装项目实际需要的SDK组件：
+  - `platforms;android-23` - Android 6.0 SDK平台
+  - `build-tools;23.0.3` - 构建工具
+
+这样既保证了构建的兼容性，又避免了不必要的版本冲突。
+
 ## 使用方法
 
 ### 常规开发构建
@@ -60,8 +79,9 @@
 ## 环境配置
 
 当前配置使用：
-- Java 8
+- Java 8 （与Gradle 3.2兼容）
 - Android SDK 23
 - Android Build Tools 23.0.3
+- 手动安装的Android SDK工具（版本9.0，兼容Java 8）
 
 如果需要修改版本，请编辑对应的workflow文件。 
