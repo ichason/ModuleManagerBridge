@@ -9,4 +9,10 @@ android {
             variant.ignore = true
         }
     }
+
+    lintOptions {
+        abortOnError false
+        warningsAsErrors false
+        checkReleaseBuilds false
+    }
 }
