@@ -3,8 +3,8 @@ import com.android.builder.core.BuilderConstants
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
 
     defaultConfig {
         minSdkVersion 15
@@ -67,7 +67,7 @@ task generateDocs(type: Javadoc, dependsOn: 'compileReleaseSources') {
         addBooleanOption 'nodefaultassets', true
         addStringOption 'hdf android.whichdoc', 'offline'
         addStringOption 'federate android', 'http://developer.android.com'
-        addFileOption 'federationapi android', fileTree(dir: 'doclib/api', include: 'android_*.txt').singleFile
+        addFileOption 'federationapi android', file('doclib/api/android_23.txt')
         addFileOption 'proofread', file("$buildDir/docs/proofread.txt")
         addStringOption 'todo', 'reference/todo.html'
         fileTree(dir: 'doclib/api', include: 'xposed_*.txt').visit {

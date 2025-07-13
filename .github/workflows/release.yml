@@ -45,8 +45,8 @@ jobs:
         yes | $HOME/android-sdk/cmdline-tools/tools/bin/sdkmanager --licenses || true
         
         # 安装所需的SDK组件
-        $HOME/android-sdk/cmdline-tools/tools/bin/sdkmanager "platforms;android-23"
-        $HOME/android-sdk/cmdline-tools/tools/bin/sdkmanager "build-tools;23.0.3"
+        $HOME/android-sdk/cmdline-tools/tools/bin/sdkmanager "platforms;android-25"
+        $HOME/android-sdk/cmdline-tools/tools/bin/sdkmanager "build-tools;25.0.0"
 
     - name: Cache Gradle packages
       uses: actions/cache@v4
