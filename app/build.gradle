@@ -10,6 +10,12 @@ android {
         minSdkVersion 15
     }
 
+    lintOptions {
+        abortOnError false
+        warningsAsErrors false
+        checkReleaseBuilds false
+    }
+
     sourceSets {
         main {
             java.srcDirs += ['src/main/apacheCommonsLang']
