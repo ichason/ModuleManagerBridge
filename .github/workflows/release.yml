@@ -11,19 +11,19 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up JDK 8
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '8'
         distribution: 'temurin'
 
     - name: Setup Android SDK
-      uses: android-actions/setup-android@v2
+      uses: android-actions/setup-android@v3
 
     - name: Cache Gradle packages
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           ~/.gradle/caches
@@ -46,54 +46,21 @@ jobs:
     - name: Build API JAR
       run: ./gradlew generateAPI --no-daemon --stacktrace
 
-    - name: Get tag name
-      id: tag
-      run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-
     - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ steps.tag.outputs.TAG_NAME }}
-        release_name: Release ${{ steps.tag.outputs.TAG_NAME }}
         body: |
-          自动构建发布 ${{ steps.tag.outputs.TAG_NAME }}
+          自动构建发布 ${{ github.ref_name }}
           
           包含文件：
           - app-release.apk - 应用APK文件
           - api.jar - API JAR文件
           - api-sources.jar - API源码JAR文件
+        files: |
+          app/build/outputs/apk/release/app-release.apk
+          app/build/api/api.jar
+          app/build/api/api-sources.jar
         draft: false
         prerelease: false
-
-    - name: Upload APK to Release
-      uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./app/build/outputs/apk/release/app-release.apk
-        asset_name: app-release.apk
-        asset_content_type: application/vnd.android.package-archive
-
-    - name: Upload API JAR to Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./app/build/api/api.jar
-        asset_name: api.jar
-        asset_content_type: application/java-archive
-
-    - name: Upload API Sources JAR to Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./app/build/api/api-sources.jar
-        asset_name: api-sources.jar
-        asset_content_type: application/java-archive 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
